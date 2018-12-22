@@ -1,0 +1,12 @@
+{
+  "name": "mBank plus",
+  "version": "0.1",
+  "description": "Extra features for mBank web page",
+  "content_scripts": [
+    {
+      "matches": ["https://online.mbank.pl/*"],
+      "js": ["mBank.js"]
+    }
+  ],
+  "manifest_version": 2
+}
