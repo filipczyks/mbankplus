@@ -5,7 +5,10 @@
   "content_scripts": [
     {
       "matches": ["https://online.mbank.pl/*"],
-      "js": ["mBank.js"]
+      "js": [
+        "out/production/mBankPlus/lib/kotlin.js",
+        "out/production/mBankPlus/mbankPlus.js"
+      ]
     }
   ],
   "manifest_version": 2
