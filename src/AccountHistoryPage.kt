@@ -1,22 +1,39 @@
-import org.w3c.dom.Element
 import org.w3c.dom.asList
+import transactions.Transaction
+import transactions.TransactionStore
 import kotlin.browser.document
 import kotlin.math.abs
 import kotlin.math.log
 
 class AccountHistoryPage {
     private val domTransactions = document.getElementsByClassName("content-list-row").asList()
+    private val transactionStore: TransactionStore = TransactionStore()
 
     init {
-        document.body!!.addEventListener("click", {
-            console.log("click on body")
-            decorateTransactions()
+        document.body!!.addEventListener("mouseover", {
+            if(hasNewDomTransactionsBeenLoaded()) {
+                redecorateDomTransactions()
+            }
+        })
+
+        document.body!!.addEventListener("mousemove", {
+            if(hasNewDomTransactionsBeenLoaded()) {
+                redecorateDomTransactions()
+            }
         })
     }
 
-    private fun decorateTransactions() {
-        val transactions = buildTransactions(domTransactions)
-        val greatestTransactionAmount = findGreatestTransactionByAmount(transactions).amount
+    private fun redecorateDomTransactions() {
+        transactionStore.replaceAll(domTransactions.map { Transaction.from(it) })
+        decorateTransactions(transactionStore.findAll())
+    }
+
+    private fun hasNewDomTransactionsBeenLoaded(): Boolean {
+        return domTransactions.count() > transactionStore.getTransactionsCount()
+    }
+
+    private fun decorateTransactions(transactions: List<Transaction>) {
+        val greatestTransactionAmount = transactionStore.getGreatestTransactionAmount()
 
         for (it in transactions.iterator()) {
             it.relativeAmount = abs(it.amount!! / greatestTransactionAmount!!)
@@ -32,13 +49,5 @@ class AccountHistoryPage {
         } else {
             "rgb(255,$relativeAmount,$relativeAmount)"
         }
-    }
-
-    private fun buildTransactions(domTransactions: List<Element>): List<Transaction> {
-        return domTransactions.map { Transaction.from(it) }
-    }
-
-    private fun findGreatestTransactionByAmount(transactions: List<Transaction>): Transaction {
-        return transactions.maxBy { abs(it.amount!!) }!!
     }
 }
