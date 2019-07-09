@@ -6,8 +6,8 @@
     {
       "matches": ["https://online.mbank.pl/*"],
       "js": [
-        "out/production/mBankPlus/lib/kotlin.js",
-        "out/production/mBankPlus/mbankPlus.js"
+        "out/kotlin.js",
+        "out/mbankplus.js"
       ]
     }
   ],
