@@ -11,13 +11,13 @@ class AccountHistoryPage {
 
     init {
         document.body!!.addEventListener("mouseover", {
-            if(hasNewDomTransactionsBeenLoaded()) {
+            if (hasNewDomTransactionsBeenLoaded()) {
                 redecorateDomTransactions()
             }
         })
 
         document.body!!.addEventListener("mousemove", {
-            if(hasNewDomTransactionsBeenLoaded()) {
+            if (hasNewDomTransactionsBeenLoaded()) {
                 redecorateDomTransactions()
             }
         })
@@ -33,21 +33,29 @@ class AccountHistoryPage {
     }
 
     private fun decorateTransactions(transactions: List<Transaction>) {
-        val greatestTransactionAmount = transactionStore.getGreatestTransactionAmount()
+        var greatestTransactionAmount = transactionStore.getGreatestTransactionAmount()
+
+        if(greatestTransactionAmount!! > 1000) {
+            greatestTransactionAmount = 1000.0
+        }
 
         for (it in transactions.iterator()) {
-            it.relativeAmount = abs(it.amount!! / greatestTransactionAmount!!)
-            it.domTransaction?.setAttribute("style", "background: " + getBackgroundColorForDomTransaction(it))
+            if (it.amount!! < 0) {
+                val relativeAmount = abs(it.amount!! / greatestTransactionAmount)
+                it.domTransaction?.setAttribute(
+                    "style",
+                    "background: " + getBackgroundColorForRelativeAmount(relativeAmount)
+                )
+            }
         }
     }
 
-    private fun getBackgroundColorForDomTransaction(it: Transaction): String {
-        val relativeAmount = 255 - log(it.relativeAmount!! * 200, 2.0) * 25
+    private fun getBackgroundColorForRelativeAmount(relativeAmount: Double): String {
+        val maxHue = 120
+        val logLimit = 8
+        val logScale = maxHue / logLimit
+        val hue = maxHue - logScale * log(100*relativeAmount, 2.0)
 
-        return if (it.amount!! > 0) {
-            "rgb($relativeAmount,255,$relativeAmount)"
-        } else {
-            "rgb(255,$relativeAmount,$relativeAmount)"
-        }
+        return "hsl($hue,100%,90%)"
     }
 }
