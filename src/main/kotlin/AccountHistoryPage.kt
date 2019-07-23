@@ -3,10 +3,10 @@ import org.w3c.dom.asList
 import transactions.TransactionPresenter
 import transactions.Transaction
 import transactions.TransactionStore
+import transactions.decorators.ColorByAmountTransactionsDecorator
 import transactions.decorators.SplitByDaysDecorator
+import transactions.decorators.TransactionsDecorator
 import kotlin.browser.document
-import kotlin.math.abs
-import kotlin.math.log
 
 class AccountHistoryPage {
     private val domTransactions = document.getElementsByClassName("content-list-row").asList()
@@ -42,31 +42,10 @@ class AccountHistoryPage {
     }
 
     private fun decorateTransactions(transactions: List<Transaction>) {
-        var greatestTransactionAmount = transactionStore.getGreatestTransactionAmount()
+        ColorByAmountTransactionsDecorator()
+            .decorate(transactions)
+        SplitByDaysDecorator()
+            .decorate(transactions)
 
-        if (greatestTransactionAmount!! > 1000) {
-            greatestTransactionAmount = 1000.0
-        }
-
-        for (it in transactions.iterator()) {
-            if (it.amount!! < 0) {
-                val relativeAmount = abs(it.amount!! / greatestTransactionAmount)
-                it.transactionPresenter?.setAttribute(
-                    "style",
-                    "background: " + getBackgroundColorForRelativeAmount(relativeAmount)
-                )
-            }
-        }
-
-        SplitByDaysDecorator().decorate(transactions)
-    }
-
-    private fun getBackgroundColorForRelativeAmount(relativeAmount: Double): String {
-        val maxHue = 120
-        val logLimit = 8
-        val logScale = maxHue / logLimit
-        val hue = maxHue - logScale * log(100 * relativeAmount, 2.0)
-
-        return "hsl($hue,100%,90%)"
     }
 }

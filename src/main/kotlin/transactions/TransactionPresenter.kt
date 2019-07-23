@@ -14,4 +14,8 @@ class TransactionPresenter(var element: Element, val index: Int) {
     fun getDateFromTextField(): String {
         return element.querySelector(".date")!!.textContent!!
     }
+
+    fun getAmountField(): Element {
+        return element.querySelector(".amount")!!
+    }
 }
