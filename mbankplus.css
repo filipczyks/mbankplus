@@ -1,0 +1,12 @@
+.sum {
+    background: #222;
+    border: 0;
+}
+
+.sum:hover {
+    background: #444;
+}
+
+.sum .content-list-row-header, .sum .content-list-row-header .negative, .sum .content-list-row-header .strong {
+    color: #ddd !important;
+}

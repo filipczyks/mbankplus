@@ -23,7 +23,7 @@ class Transaction {
                 ?.replace(",", ".")
                 ?.toDouble()
         }
-        
+
         private fun getCreatedAtFrom(transactionPresenter: TransactionPresenter): Date? {
             val dateText = transactionPresenter.getDateField()?.textContent!!
             val splitDate = dateText.split(".")
@@ -34,6 +34,5 @@ class Transaction {
 
             return Date(year, month, day)
         }
-
     }
 }

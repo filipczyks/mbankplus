@@ -8,6 +8,9 @@
       "js": [
         "out/kotlin.js",
         "out/mbankplus.js"
+      ],
+      "css": [
+        "mbankplus.css"
       ]
     }
   ],
