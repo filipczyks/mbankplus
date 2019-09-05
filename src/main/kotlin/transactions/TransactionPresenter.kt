@@ -7,15 +7,11 @@ class TransactionPresenter(var element: Element, val index: Int) {
         return element.getAttribute(name)
     }
 
-    fun setAttribute(key: String, value: String) {
-        element.setAttribute(key, value)
+    fun getDateField(): Element? {
+        return element.querySelector(".date")
     }
 
-    fun getDateFromTextField(): String {
-        return element.querySelector(".date")!!.textContent!!
-    }
-
-    fun getAmountField(): Element {
-        return element.querySelector(".amount")!!
+    fun getAmountField(): Element? {
+        return element.querySelector(".amount")
     }
 }

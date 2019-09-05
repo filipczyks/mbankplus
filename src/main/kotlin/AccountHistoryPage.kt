@@ -4,8 +4,7 @@ import transactions.TransactionPresenter
 import transactions.Transaction
 import transactions.TransactionStore
 import transactions.decorators.ColorByAmountTransactionsDecorator
-import transactions.decorators.SplitByDaysDecorator
-import transactions.decorators.TransactionsDecorator
+import transactions.decorators.SumByDayTransactionsDecorator
 import kotlin.browser.document
 
 class AccountHistoryPage {
@@ -16,18 +15,18 @@ class AccountHistoryPage {
     init {
         document.body!!.addEventListener("mouseover", {
             if (hasNewDomTransactionsBeenLoaded()) {
-                redecorateDomTransactions()
+                redecorateTransactions()
             }
         })
 
         document.body!!.addEventListener("mousemove", {
             if (hasNewDomTransactionsBeenLoaded()) {
-                redecorateDomTransactions()
+                redecorateTransactions()
             }
         })
     }
 
-    private fun redecorateDomTransactions() {
+    private fun redecorateTransactions() {
         val transactionPresenters = buildTransactionPresentersFrom(domTransactions)
         transactionStore.replaceAll(transactionPresenters.map { Transaction.from(it) })
 
@@ -44,7 +43,7 @@ class AccountHistoryPage {
     private fun decorateTransactions(transactions: List<Transaction>) {
         ColorByAmountTransactionsDecorator()
             .decorate(transactions)
-        SplitByDaysDecorator()
+        SumByDayTransactionsDecorator()
             .decorate(transactions)
 
     }

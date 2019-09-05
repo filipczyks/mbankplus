@@ -19,13 +19,13 @@ class Transaction {
 
         private fun getAmountFrom(transactionPresenter: TransactionPresenter): Double? {
             return transactionPresenter
-                .getAttribute("data-amount")!!
-                .replace(",", ".")
-                .toDouble()
+                .getAttribute("data-amount")
+                ?.replace(",", ".")
+                ?.toDouble()
         }
-
+        
         private fun getCreatedAtFrom(transactionPresenter: TransactionPresenter): Date? {
-            val dateText = transactionPresenter.getDateFromTextField()
+            val dateText = transactionPresenter.getDateField()?.textContent!!
             val splitDate = dateText.split(".")
 
             val day = splitDate[0].toInt()
