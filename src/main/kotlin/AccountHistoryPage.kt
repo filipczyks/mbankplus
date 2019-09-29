@@ -4,6 +4,7 @@ import transactions.TransactionPresenter
 import transactions.Transaction
 import transactions.TransactionStore
 import transactions.decorators.ColorByAmountTransactionsDecorator
+import transactions.decorators.HideInternalTransactionsDecorator
 import transactions.decorators.SumByDayTransactionsDecorator
 import kotlin.browser.document
 
@@ -45,6 +46,7 @@ class AccountHistoryPage {
             .decorate(transactions)
         SumByDayTransactionsDecorator()
             .decorate(transactions)
-
+        HideInternalTransactionsDecorator()
+            .decorate(transactions)
     }
 }

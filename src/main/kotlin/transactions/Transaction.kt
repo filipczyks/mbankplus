@@ -5,6 +5,7 @@ import kotlin.js.Date
 class Transaction {
     var amount: Double? = null
     var createdAt: Date? = null
+    var isInternal: Boolean = false
     var transactionPresenter: TransactionPresenter? = null
 
     companion object {
@@ -13,6 +14,7 @@ class Transaction {
             transaction.transactionPresenter = transactionPresenter
             transaction.amount = getAmountFrom(transactionPresenter)
             transaction.createdAt = getCreatedAtFrom(transactionPresenter)
+            transaction.isInternal = getIsInternalFrom(transactionPresenter)
 
             return transaction
         }
@@ -33,6 +35,13 @@ class Transaction {
             val year = splitDate[2].toInt()
 
             return Date(year, month, day)
+        }
+
+        private fun getIsInternalFrom(transactionPresenter: TransactionPresenter): Boolean {
+            val classes = transactionPresenter.getAttribute("class")
+                ?.split(" ")!!
+
+            return classes.find { it == "disabled" } != null
         }
     }
 }
