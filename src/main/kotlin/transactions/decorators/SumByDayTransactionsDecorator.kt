@@ -1,13 +1,11 @@
 package transactions.decorators
 
 import org.w3c.dom.Element
-import org.w3c.dom.HTMLElement
-import org.w3c.dom.Node
 import transactions.Transaction
 import utils.DateUtils
 import kotlin.browser.document
-import kotlin.dom.createElement
 import kotlin.js.Date
+import kotlin.math.round
 
 class SumByDayTransactionsDecorator : TransactionsDecorator {
     override fun decorate(transactions: List<Transaction>) {
@@ -20,13 +18,15 @@ class SumByDayTransactionsDecorator : TransactionsDecorator {
 
                 val expensesSum = it.filter { it.amount!! < 0 }
                     .sumByDouble { it.amount!! }
-                
+
                 prependSummary(firstRow, it[0].createdAt!!, expensesSum)
             }
     }
 
     private fun prependSummary(element: Element, date: Date, expensesSum: Double) {
         val dateString = "${DateUtils.pad(date.getDate())}.${DateUtils.pad(date.getMonth())}.${date.getFullYear()}"
+
+        val expensesSumString = roundDouble(expensesSum)
 
         val summary = document.createElement("li")
         summary.innerHTML =
@@ -38,14 +38,14 @@ class SumByDayTransactionsDecorator : TransactionsDecorator {
                 "        <div class=\"column description-additional-info\"></div>\n" +
                 "        <div class=\"column description\">\n" +
                 "            <span class=\"wrapper\">\n" +
-                "                <span class=\"label\">$expensesSum</span>\n" +
+                "                <span class=\"label\">$expensesSumString</span>\n" +
                 "            </span>\n" +
                 "        </div>" +
                 "        <div class=\"column category-additional-info\">\n" +
                 "        </div>\n" +
                 "        <div class=\"column category\">\n" +
                 "            <div class=\"multi-select categoryTree\" data-select-id=\"14\" data-irrelevant=\"false\">\n" +
-                "                <span class=\"text\">$expensesSum</span>\n" +
+                "                <span class=\"text\">$expensesSumString</span>\n" +
                 "            </div>\n" +
                 "        </div>\n" +
                 "        <div class=\"column actions\">\n" +
@@ -53,7 +53,7 @@ class SumByDayTransactionsDecorator : TransactionsDecorator {
                 "        </div>\n" +
                 "        <div class=\"column amount\">\n" +
                 "            <strong class=\"negative\">\n" +
-                "                $expensesSum\n" +
+                "                $expensesSumString\n" +
                 "            </strong>PLN\n" +
                 "        </div>\n" +
                 "    </header>\n" +
@@ -62,4 +62,6 @@ class SumByDayTransactionsDecorator : TransactionsDecorator {
 
         element.parentNode?.insertBefore(summary, element)
     }
+
+    private fun roundDouble(expensesSum: Double) = round(expensesSum * 100) / 100
 }
