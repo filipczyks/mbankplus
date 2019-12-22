@@ -21,7 +21,10 @@ class Transaction {
 
         private fun getAmountFrom(transactionPresenter: TransactionPresenter): Double? {
             return transactionPresenter
-                .getAttribute("data-amount")
+                .getAmountField()!!
+                .textContent
+                ?.replace("PLN", "")
+                ?.replace(" ", "")
                 ?.replace(",", ".")
                 ?.toDouble()
         }
@@ -34,14 +37,14 @@ class Transaction {
             val month = splitDate[1].toInt()
             val year = splitDate[2].toInt()
 
-            return Date(year, month, day)
+            return Date(year, month - 1, day)
         }
 
         private fun getIsInternalFrom(transactionPresenter: TransactionPresenter): Boolean {
             val classes = transactionPresenter.getAttribute("class")
                 ?.split(" ")!!
 
-            return classes.find { it == "disabled" } != null
+            return classes.find { it == TransactionPresenter.CLASS_IS_INTERNAL } != null
         }
     }
 }

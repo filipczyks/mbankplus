@@ -16,7 +16,7 @@ class SumByDayTransactionsDecorator : TransactionsDecorator {
                     .transactionPresenter!!
                     .element
 
-                val expensesSum = it.filter { it.amount!! < 0 }
+                val expensesSum = it.filter { it.amount!! < 0 && !it.isInternal }
                     .sumByDouble { it.amount!! }
 
                 prependSummary(firstRow, it[0].createdAt!!, expensesSum)
@@ -25,40 +25,41 @@ class SumByDayTransactionsDecorator : TransactionsDecorator {
 
     private fun prependSummary(element: Element, date: Date, expensesSum: Double) {
         val dateString = "${DateUtils.pad(date.getDate())}.${DateUtils.pad(date.getMonth())}.${date.getFullYear()}"
+        val dayOfWeekString = "${date.getDay()}"
 
         val expensesSumString = roundDouble(expensesSum)
 
-        val summary = document.createElement("li")
+        val summary = document.createElement("tr")
         summary.innerHTML =
-                "<li class=\"content-list-row collapsed sum\" data-category-id=\"14\" data-currency=\"PLN\">\n" +
-                "    <header class=\"content-list-row-header\">\n" +
-                "        <div class=\"column type\">\n" +
-                "        </div>\n" +
-                "        <div class=\"column date\" data-order-number=\"14\">$dateString</div>\n" +
-                "        <div class=\"column description-additional-info\"></div>\n" +
-                "        <div class=\"column description\">\n" +
-                "            <span class=\"wrapper\">\n" +
-                "                <span class=\"label\">$expensesSumString</span>\n" +
-                "            </span>\n" +
-                "        </div>" +
-                "        <div class=\"column category-additional-info\">\n" +
-                "        </div>\n" +
-                "        <div class=\"column category\">\n" +
-                "            <div class=\"multi-select categoryTree\" data-select-id=\"14\" data-irrelevant=\"false\">\n" +
-                "                <span class=\"text\">$expensesSumString</span>\n" +
-                "            </div>\n" +
-                "        </div>\n" +
-                "        <div class=\"column actions\">\n" +
-                "            <ul>\n</ul>\n" +
-                "        </div>\n" +
-                "        <div class=\"column amount\">\n" +
-                "            <strong class=\"negative\">\n" +
-                "                $expensesSumString\n" +
-                "            </strong>PLN\n" +
-                "        </div>\n" +
-                "    </header>\n" +
-                "\n" +
-                "</li>"
+                "<tr class=\"_3oP6Df9GeSAJbaINFq_mUP sum\">" +
+                    "<td class=\"_15uT9ZzfHxEXJFUyScU42U\">" +
+                        "<div class=\"_3MSDLfycBJ4T8peBfFPsAB\" style=\"text-align: center;\">" +
+                            "<span aria-labelledby=\"tooltip-83\"></span>" +
+                        "</div>" +
+                    "</td>" +
+                    "<td class=\"_2zsEj9F3790nueN4uWbmh3 _2DLWbTUxedXJ-cPkZvUwDu UX5dED1uU_XhOZZD36O_L\">" +
+                        "<span class=\"date\">$dateString</span>" +
+                    "</td>" +
+                    "<td class=\"_2zsEj9F3790nueN4uWbmh3 _2DLWbTUxedXJ-cPkZvUwDu _2uJi_biBLR3c3Qjv80NTGA\"></td>" +
+                    "<td class=\"_2zsEj9F3790nueN4uWbmh3 _2DLWbTUxedXJ-cPkZvUwDu _3v9fRQuC-jvEBUH7gaMNVT\">" +
+                        "<div class=\"dayOfWeek\">$dayOfWeekString</div>" +
+                    "</td>" +
+                    "<td class=\"_2zsEj9F3790nueN4uWbmh3 _2DLWbTUxedXJ-cPkZvUwDu\">" +
+                    "<div class=\"_2BmwgwApNCwFZNlXU384dS\"></div>" +
+                    "</td>" +
+                    "<td class=\"_2zsEj9F3790nueN4uWbmh3 _2DLWbTUxedXJ-cPkZvUwDu\">" +
+                        "<div class=\"_3v8JAx5zYMTOD9r_-zh2Zh\">" +
+                            "<div class=\"_3s_V00e3u2GBhaObWGJ4UH\">" +
+                                "<span></span>" +
+                            "</div>" +
+                        "</div>" +
+                    "</td>" +
+                    "<td class=\"expenses\">" +
+                        "<span>$expensesSumString</span>" +
+                    "</td>" +
+                "</tr>"
+
+        summary.setAttribute("class", "sum")
 
         element.parentNode?.insertBefore(summary, element)
     }

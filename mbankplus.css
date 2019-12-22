@@ -1,12 +1,18 @@
 .sum {
     background: #222;
     border: 0;
+    padding: 5px;
+    font-size: 14px;
 }
 
 .sum:hover {
     background: #444;
 }
 
-.sum .content-list-row-header, .sum .content-list-row-header .negative, .sum .content-list-row-header .strong {
+.sum, .sum td {
     color: #ddd !important;
+}
+
+.sum .expenses {
+    text-align: center;
 }

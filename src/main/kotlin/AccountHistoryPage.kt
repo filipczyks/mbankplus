@@ -9,7 +9,7 @@ import transactions.decorators.SumByDayTransactionsDecorator
 import kotlin.browser.document
 
 class AccountHistoryPage {
-    private val domTransactions = document.getElementsByClassName("content-list-row").asList()
+    private val domTransactions = document.getElementsByClassName(TransactionPresenter.CLASS_TRANSACTION).asList()
 
     private val transactionStore: TransactionStore = TransactionStore()
 
