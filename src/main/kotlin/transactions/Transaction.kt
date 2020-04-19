@@ -23,8 +23,9 @@ class Transaction {
             return transactionPresenter
                 .getAmountField()!!
                 .textContent
-                ?.replace("PLN", "")
-                ?.replace(" ", "")
+                ?.replace(" PLN", "")
+                ?.replace(Regex("\\s+"), "")
+                ?.replace("&nbsp;", "")
                 ?.replace(",", ".")
                 ?.toDouble()
         }
@@ -34,10 +35,10 @@ class Transaction {
             val splitDate = dateText.split(".")
 
             val day = splitDate[0].toInt()
-            val month = splitDate[1].toInt()
+            val month = splitDate[1].toInt() - 1
             val year = splitDate[2].toInt()
 
-            return Date(year, month - 1, day)
+            return Date(year, month, day)
         }
 
         private fun getIsInternalFrom(transactionPresenter: TransactionPresenter): Boolean {
