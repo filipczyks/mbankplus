@@ -4,7 +4,7 @@ import org.w3c.dom.Element
 
 class TransactionPresenter(var element: Element, val index: Int) {
     companion object {
-        val CLASS_TRANSACTION = "_2kAiFiNqJBf0hoUh8-KuAT"
+        val CLASS_TRANSACTION = "_3oP6Df9GeSAJbaINFq_mUP"
         val CLASS_IS_INTERNAL = "_2Ct8R_2IyNsJvMNbyHeLBH"
         val CLASS_DATE = "UX5dED1uU_XhOZZD36O_L"
         val CLASS_AMOUNT = "_3c5cbKfH9GVa6SsOFUEjC2"

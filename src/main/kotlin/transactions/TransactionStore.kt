@@ -6,7 +6,7 @@ import kotlin.math.absoluteValue
 class TransactionStore {
     private var transactions = mutableListOf<Transaction>()
 
-    fun getTransactionsCount(): Int {
+    fun getCount(): Int {
         return transactions.count()
     }
 
@@ -21,5 +21,9 @@ class TransactionStore {
     fun replaceAll(transactions: List<Transaction>) {
         this.transactions.clear()
         this.transactions.addAll(transactions)
+    }
+
+    fun addAll(delta: List<Transaction>) {
+        this.transactions.addAll(delta)
     }
 }

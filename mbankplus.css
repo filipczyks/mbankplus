@@ -16,3 +16,14 @@
 .sum .expenses {
     text-align: center;
 }
+
+.daySummary {
+    font-size: .875rem;
+    background-color: #F0F8FF;
+    color: #333;
+    padding: 10px;
+}
+
+.daySummary td {
+    padding: .2rem;
+}

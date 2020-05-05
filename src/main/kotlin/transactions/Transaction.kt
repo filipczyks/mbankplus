@@ -7,6 +7,7 @@ class Transaction {
     var createdAt: Date? = null
     var isInternal: Boolean = false
     var transactionPresenter: TransactionPresenter? = null
+    var hasSummary: Boolean = false
 
     companion object {
         fun from(transactionPresenter: TransactionPresenter): Transaction {
@@ -35,7 +36,7 @@ class Transaction {
             val splitDate = dateText.split(".")
 
             val day = splitDate[0].toInt()
-            val month = splitDate[1].toInt() - 1
+            val month = splitDate[1].toInt()
             val year = splitDate[2].toInt()
 
             return Date(year, month, day)

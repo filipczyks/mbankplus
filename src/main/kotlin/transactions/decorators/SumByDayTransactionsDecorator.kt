@@ -9,17 +9,24 @@ import kotlin.math.round
 
 class SumByDayTransactionsDecorator : TransactionsDecorator {
     override fun decorate(transactions: List<Transaction>) {
-        transactions.groupBy { it.createdAt!!.getDate() }
+        val groupedByDay = transactions.filter { !it.hasSummary }
+            .groupBy { it.createdAt!!.getDate() * it.createdAt!!.getMonth() }
             .values
-            .map { it ->
-                val firstRow = it.sortedBy { it.transactionPresenter!!.index }[0]
+
+        val lastDayTransactions = groupedByDay.last()
+
+        groupedByDay.filter { it -> it != lastDayTransactions }
+            .map { ts ->
+                val firstRow = ts.sortedBy { it.transactionPresenter!!.index }[0]
                     .transactionPresenter!!
                     .element
 
-                val expensesSum = it.filter { it.amount!! < 0 && !it.isInternal }
+                val expensesSum = ts.filter { it.amount!! < 0 && !it.isInternal }
                     .sumByDouble { it.amount!! }
 
-                prependSummary(firstRow, it[0].createdAt!!, expensesSum)
+                prependSummary(firstRow, ts[0].createdAt!!, expensesSum)
+
+                ts.forEach { it -> it.hasSummary = true }
             }
     }
 
@@ -27,39 +34,24 @@ class SumByDayTransactionsDecorator : TransactionsDecorator {
         val dateString = "${DateUtils.pad(date.getDate())}.${DateUtils.pad(date.getMonth())}.${date.getFullYear()}"
         val dayOfWeekString = "${date.getDay()}"
 
+        console.log("prepending summary $dateString / $expensesSum")
+
         val expensesSumString = roundDouble(expensesSum)
 
         val summary = document.createElement("tr")
         summary.innerHTML =
-                "<tr class=\"_3oP6Df9GeSAJbaINFq_mUP sum\">" +
-                    "<td class=\"_15uT9ZzfHxEXJFUyScU42U\">" +
-                        "<div class=\"_3MSDLfycBJ4T8peBfFPsAB\" style=\"text-align: center;\">" +
-                            "<span aria-labelledby=\"tooltip-83\"></span>" +
-                        "</div>" +
-                    "</td>" +
-                    "<td class=\"_2zsEj9F3790nueN4uWbmh3 _2DLWbTUxedXJ-cPkZvUwDu UX5dED1uU_XhOZZD36O_L\">" +
-                        "<span class=\"date\">$dateString</span>" +
-                    "</td>" +
-                    "<td class=\"_2zsEj9F3790nueN4uWbmh3 _2DLWbTUxedXJ-cPkZvUwDu _2uJi_biBLR3c3Qjv80NTGA\"></td>" +
-                    "<td class=\"_2zsEj9F3790nueN4uWbmh3 _2DLWbTUxedXJ-cPkZvUwDu _3v9fRQuC-jvEBUH7gaMNVT\">" +
-                        "<div class=\"dayOfWeek\">$dayOfWeekString</div>" +
-                    "</td>" +
-                    "<td class=\"_2zsEj9F3790nueN4uWbmh3 _2DLWbTUxedXJ-cPkZvUwDu\">" +
-                    "<div class=\"_2BmwgwApNCwFZNlXU384dS\"></div>" +
-                    "</td>" +
-                    "<td class=\"_2zsEj9F3790nueN4uWbmh3 _2DLWbTUxedXJ-cPkZvUwDu\">" +
-                        "<div class=\"_3v8JAx5zYMTOD9r_-zh2Zh\">" +
-                            "<div class=\"_3s_V00e3u2GBhaObWGJ4UH\">" +
-                                "<span></span>" +
-                            "</div>" +
-                        "</div>" +
-                    "</td>" +
+                "<tr class=\"_3oP6Df9GeSAJbaINFq_mUP\">" +
+                    "<td></td>" +
+                    "<td>$dateString</td>" +
+                    "<td>$dayOfWeekString</td>" +
+                    "<td></td>" +
+                    "<td></td>" +
                     "<td class=\"expenses\">" +
                         "<span>$expensesSumString</span>" +
                     "</td>" +
                 "</tr>"
 
-        summary.setAttribute("class", "sum")
+        summary.setAttribute("class", "daySummary")
 
         element.parentNode?.insertBefore(summary, element)
     }
