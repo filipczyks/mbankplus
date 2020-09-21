@@ -24,7 +24,7 @@ class Transaction {
             return transactionPresenter
                 .getAmountField()!!
                 .textContent
-                ?.replace(" PLN", "")
+                ?.replace("PLN", "")
                 ?.replace(Regex("\\s+"), "")
                 ?.replace("&nbsp;", "")
                 ?.replace(",", ".")

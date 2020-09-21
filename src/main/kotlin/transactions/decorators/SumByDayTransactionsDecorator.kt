@@ -15,7 +15,7 @@ class SumByDayTransactionsDecorator : TransactionsDecorator {
 
         val lastDayTransactions = groupedByDay.last()
 
-        groupedByDay.filter { it -> it != lastDayTransactions }
+        groupedByDay.filter { it != lastDayTransactions }
             .map { ts ->
                 val firstRow = ts.sortedBy { it.transactionPresenter!!.index }[0]
                     .transactionPresenter!!
@@ -26,7 +26,7 @@ class SumByDayTransactionsDecorator : TransactionsDecorator {
 
                 prependSummary(firstRow, ts[0].createdAt!!, expensesSum)
 
-                ts.forEach { it -> it.hasSummary = true }
+                ts.forEach { it.hasSummary = true }
             }
     }
 
