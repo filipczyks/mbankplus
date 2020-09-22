@@ -1,22 +1,22 @@
 # mbankplus
-Chrome extension adding extra features to mBank user panel.
+Wtyczka Chrome poprawiająca historię konta w mBanku,
 
-## Features
-Currently only feature is adding bar showing how big was your expense according to other expenses in your mBank account history.
+## Funkcje
+- wewnętrzne przelewy są ukryte
+- wydatki dzienne są pogrupowane
+- wielkość wydatku oznaczona jest koloroem w zależności od wielkości wydatku
 
-### Before
-![before](https://i.imgur.com/1jIt7NE.jpg "before")
+### Przed
+![before](https://i.imgur.com/i5ttQIM.png "before")
 
-### After
-![after](https://i.imgur.com/17eer1F.jpg "after")
+### Po
+![after](https://i.imgur.com/wXiKedb.png "after")
 
-## Install
-Load this code as chrome extension in developer mode using [Load Unpacked](https://developer.chrome.com/extensions/getstarted) feature
+## Instalacja
+Wczytaj kod w trybie developerskim [Load Unpacked](https://developer.chrome.com/extensions/getstarted) feature
 
-## Use
-Open mBank account history and click anywhere on page's body.
+## Użycie
+Otwórz listę operacji w historii konta.
 
-## Future
-- group transaction by days and add group summary (sum of expenses)
-- hide "grayed out" transactions
-- (bugfix) recalculate transactions when next page is loaded
+## Przyszłość
+Chciałem to rozwijać, ale chyba przesiadam się na PEKAO, które już ma takie rzeczy w UI.
